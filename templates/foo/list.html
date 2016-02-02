@@ -6,7 +6,7 @@
 	<div>
 		<ul>
 			{% for object in objects %}
-			<li><a href="/bar/edit/{{object.id}}" class="btn">{{object.name}}</a><a href="/foo/delete/{{object.id}}"><span class="glyphicon glyphicon-remove"></span></a></li> 
+			<li><a href="/foo/edit/{{object.id}}" class="btn">{{object.name}}</a><a href="/foo/delete/{{object.id}}"><span class="glyphicon glyphicon-remove"></span></a></li> 
 			{% endfor %}
 		</ul>
 	</div>
