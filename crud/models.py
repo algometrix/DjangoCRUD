@@ -8,7 +8,7 @@ class Foo(models.Model):
         db_table='foo'
     
 class Bar(models.Model):
-    fooid = models.IntegerField()
+    fooid = models.ForeignKey(Foo,related_name='bar',db_column='fooid')
     name = models.CharField(max_length=50)
     
     class Meta:

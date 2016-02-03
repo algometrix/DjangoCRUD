@@ -35,7 +35,10 @@ class FooEdit(View):
     def get(self, request, id):
         params = dict()
         object = Foo.objects.get(id=id)
+        children = object.bar.all()
+        print(children)
         params['form'] = FooForm(initial={'name':object.name})
+        params['children'] = children
         return render(request, 'foo/edit.html', params)
     
     def post(self, request,id):
@@ -77,7 +80,7 @@ class BarCreate(View):
         if form.is_valid():
             name = form.cleaned_data['name']
             fooid = form.cleaned_data['fooid']
-            Bar.objects.create(name=name,fooid=fooid)
+            Bar.objects.create(name=name,fooid=Foo.objects.get(id=fooid))
             return HttpResponseRedirect(reverse('crud.bar.list'))
         return HttpResponseRedirect('/')
     
@@ -85,7 +88,7 @@ class BarEdit(View):
     def get(self, request, id):
         params = dict()
         object = Bar.objects.get(id=id)
-        params['form'] = BarForm(initial={'name':object.name,'fooid':object.fooid})
+        params['form'] = BarForm(initial={'name':object.name,'fooid':object.fooid.id})
         return render(request, 'bar/edit.html', params)
     
     def post(self, request,id):
@@ -95,7 +98,7 @@ class BarEdit(View):
             fooid = form.cleaned_data['fooid']
             object = Bar.objects.get(id=id)
             object.name = name
-            object.fooid = fooid
+            object.fooid = Foo.objects.get(id=fooid)
             object.save()
             return HttpResponseRedirect(reverse('crud.bar.list'))
         return HttpResponseRedirect('/')
