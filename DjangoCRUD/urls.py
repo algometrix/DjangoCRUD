@@ -23,12 +23,12 @@ urlpatterns = [
     #foo
     url(r'^foo/list/$',FooList.as_view(),name='crud.foo.list'),
     url(r'^foo/create/$',FooCreate.as_view(),name='crud.foo.create'),
-    url(r'^foo/edit/(?P<id>\w+)$',FooEdit.as_view(),name='crud.foo.edit'),
-    url(r'^foo/delete/(?P<id>\w+)$',FooDelete.as_view(),name='crud.foo.edit'),
+    url(r'^foo/edit/(?P<id>[^/]+)/$',FooEdit.as_view(),name='crud.foo.edit'),
+    url(r'^foo/delete/(?P<id>[^/]+)/$',FooDelete.as_view(),name='crud.foo.edit'),
     #bar
     url(r'^bar/list/$',BarList.as_view(),name='crud.bar.list'),
     url(r'^bar/create/$',BarCreate.as_view(),name='crud.bar.create'),
-    url(r'^bar/edit/(?P<id>\w+)$',BarEdit.as_view(),name='crud.bar.edit'),
-    url(r'^bar/delete/(?P<id>\w+)$',BarDelete.as_view(),name='crud.bar.edit'),
+    url(r'^bar/edit/(?P<id>[^/]+)/$',BarEdit.as_view(),name='crud.bar.edit'),
+    url(r'^bar/delete/(?P<id>[^/]+)/$',BarDelete.as_view(),name='crud.bar.edit'),
     
 ]

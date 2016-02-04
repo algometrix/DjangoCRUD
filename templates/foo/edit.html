@@ -12,7 +12,7 @@
 	<ul>
 			<li>Bar Children</li>
 			{% for child in children %}
-			<li><a href="/bar/edit/{{child.id}}" class="btn">{{child.name}} </a><a href="/bar/delete/{{object.id}}"><span class="glyphicon glyphicon-remove"></span></a></li> 
+			<li><a href="/bar/edit/{{child.id}}" class="btn">{{child.name}} </a><a href="/bar/delete/{{child.id}}"><span class="glyphicon glyphicon-remove"></span></a></li> 
 			{% endfor %}
 	</ul>
 	

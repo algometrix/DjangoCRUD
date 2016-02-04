@@ -27,7 +27,10 @@ class FooCreate(View):
         form = FooForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            Foo.objects.create(name=name)
+            bar_name = form.cleaned_data['bar_name']
+            new_foo = Foo.objects.create(name=name)
+            if bar_name != None and bar_name !='':
+                Bar.objects.create(foo=new_foo, name=bar_name)
             return HttpResponseRedirect(reverse('crud.foo.list'))
         return HttpResponseRedirect('/')
     
@@ -36,7 +39,6 @@ class FooEdit(View):
         params = dict()
         object = Foo.objects.get(id=id)
         children = object.bar.all()
-        print(children)
         params['form'] = FooForm(initial={'name':object.name})
         params['children'] = children
         return render(request, 'foo/edit.html', params)
@@ -45,9 +47,12 @@ class FooEdit(View):
         form = FooForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
+            bar_name = form.cleaned_data['bar_name']
             object = Foo.objects.get(id=id)
             object.name = name
             object.save()
+            if bar_name != None and bar_name !='':
+                Bar.objects.create(foo=object, name=bar_name)
             return HttpResponseRedirect(reverse('crud.foo.list'))
         return HttpResponseRedirect('/')
     
@@ -79,8 +84,8 @@ class BarCreate(View):
         form = BarForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            fooid = form.cleaned_data['fooid']
-            Bar.objects.create(name=name,fooid=Foo.objects.get(id=fooid))
+            foo_id = form.cleaned_data['foo_id']
+            Bar.objects.create(name=name,foo=Foo.objects.get(id=foo_id))
             return HttpResponseRedirect(reverse('crud.bar.list'))
         return HttpResponseRedirect('/')
     
@@ -88,17 +93,17 @@ class BarEdit(View):
     def get(self, request, id):
         params = dict()
         object = Bar.objects.get(id=id)
-        params['form'] = BarForm(initial={'name':object.name,'fooid':object.fooid.id})
+        params['form'] = BarForm(initial={'name':object.name,'foo_id':object.foo.id})
         return render(request, 'bar/edit.html', params)
     
     def post(self, request,id):
         form = BarForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            fooid = form.cleaned_data['fooid']
+            foo_id = form.cleaned_data['foo_id']
             object = Bar.objects.get(id=id)
             object.name = name
-            object.fooid = Foo.objects.get(id=fooid)
+            object.foo = Foo.objects.get(id=foo_id)
             object.save()
             return HttpResponseRedirect(reverse('crud.bar.list'))
         return HttpResponseRedirect('/')
